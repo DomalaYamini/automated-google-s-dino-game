@@ -1,0 +1,44 @@
+#include <Servo.h>
+int threshold = 930;   
+int unpress_angle = 0; 
+int press_angle = 36;
+int ldr_1=A0;
+int ldr_2=A1;
+int ldr_3=A2;
+Servo myservo;  
+
+void setup() {        
+  Serial.begin(9600);  
+  myservo.attach(9); 
+  pinMode(ldr_1,INPUT);
+  pinMode(ldr_2,INPUT);
+  pinMode(ldr_3,INPUT); 
+  myservo.write(0);  
+}
+
+void loop() {
+  int a =analogRead(ldr_1);
+  int b=analogRead(ldr_2);
+  int c=analogRead(ldr_3);
+  Serial.println(a);
+  Serial.println(b);
+  Serial.println(c);
+  Serial.println();
+  delay(1000);
+          
+ if(c>threshold){
+   if(a < threshold || b <threshold){
+     myservo.write(press_angle);          
+     delay(100 );                       
+     myservo.write(unpress_angle); 
+     delay(100 );
+   }
+}else{
+   if(a > threshold || b >threshold){
+      myservo.write(press_angle);          
+      delay(100 );                       
+      myservo.write(unpress_angle); 
+      delay(100 );
+    }              
+ }
+}
